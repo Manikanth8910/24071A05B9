@@ -1,0 +1,118 @@
+#1st question
+n=int(input("enter the number"))
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+#2nd question
+n = int(input("Enter the number of terms: "))
+a, b = 0, 1  
+print(a, b, end=" ")  
+for _ in range(n - 2): 
+    c = a + b
+    print(c, end=" ")
+    a, b = b, c
+
+#3rd question
+
+a = int(input("Enter first number: "))
+b = int(input("Enter second number: "))
+x, y = a, b
+while y:
+    x, y = y, x % y
+gcd = x
+lcm = (a * b) // gcd
+print("GCD:", gcd)
+print("LCM:", lcm)
+
+#4th question
+
+def add(a, b):
+    return a + b
+def subtract(a, b):
+    return a - b
+def multiply(a, b):
+    return a * b
+def divide(a, b):
+    return a / b if b != 0 else 'Error: Division by zero'
+a = int(input("Enter first number: "))
+b = int(input("Enter second number: "))
+print("Choose an operation:")
+print("1. Add")
+print("2. Subtract")
+print("3. Multiply")
+print("4. Divide")
+operation = int(input("Enter operation (1/2/3/4): "))
+
+if operation == 1:
+    result = add(a, b)
+elif operation == 2:
+    result = subtract(a, b)
+elif operation == 3:
+    result = multiply(a, b)
+elif operation == 4:
+    result = divide(a, b)
+else:
+    result = "Invalid operation"
+
+print("Result:", result)
+
+#5th question
+lst = list(map(int, input("Enter numbers separated by space: ").split()))
+def remove_duplicates(lst):
+    return list(set(lst))
+print(remove_duplicates(lst))  
+
+ #6th question
+my_dict = {
+    'name': 'Manikanth',
+    'age': 18,
+    'city': 'HYd',
+    'job': 'STUDENT',
+    'hobby': 'Photography'
+}
+
+for key, value in my_dict.items():
+    print(f"{key}: {value}")
+
+#7th question
+import numpy as np
+
+matrix1 = np.array([[1, 2], [3, 4]])
+matrix2 = np.array([[5, 6], [7, 8]])
+print(np.add(matrix1, matrix2))
+print(np.subtract(matrix1, matrix2))
+print(np.dot(matrix1, matrix2))
+print(np.transpose(matrix1))
+
+ #9th question
+from collections import Counter
+import re
+
+def most_common_word(text):
+    words = re.findall(r'\w+', text.lower())
+    common_word = Counter(words).most_common(1)
+    return common_word[0] if common_word else None
+
+text=input("enter text")
+print(most_common_word(text)) 
+
+#10 question
+import random
+import string
+
+def generate_password(length=8):
+    characters = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(characters) for _ in range(length))
+    return password
+
+
+x = int(input("Enter the size of the password: "))
+
+
+print("Generated Password:", generate_password(x))
+
+  
