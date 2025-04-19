@@ -1,0 +1,168 @@
+// Lost & Found Management System with Categories, Locations, and Person Details
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_NAME 50
+#define MAX_CATEGORY 30
+#define MAX_LOCATION 30
+#define MAX_PHONE 15
+
+const char* locations[] = {
+    "CSE Department", "Library", "Cafeteria", "Main Gate", "Admin Block",
+    "Hostel A", "Hostel B", "Sports Ground", "Parking Lot", "Lab 101",
+    "Seminar Hall", "Exam Cell", "Bus Stop", "Auditorium", "Workshop Area"
+};
+int locationCount = 15,i;
+
+const char* electronicsItems[] = {"Earbuds", "Mobile", "Laptop", "USB Drive", "Mouse", "Charger", "Laptop Charger"};
+const char* stationeryItems[] = {"Books", "Pens", "Pencils", "Markers", "Notepad", "Ruler"};
+const char* bagItems[] = {"School Bag", "Laptop Bag", "Tote Bag"};
+const char* clothesItems[] = {"Jacket", "Sweater", "Scarf"};
+const char* bottleItems[] = {"Water Bottle", "Steel Bottle"};
+const char* idItems[] = {"College ID", "Library Card"};
+
+typedef struct Item {
+    int id;
+    char name[MAX_NAME];
+    char category[MAX_CATEGORY];
+    char status[10];
+    char location[MAX_LOCATION];
+    char personName[MAX_NAME];
+    char phone[MAX_PHONE];
+    struct Item* next;
+} Item;
+
+Item* head = NULL;
+int itemIdCounter = 1;
+
+void listOptions(const char** items, int size) {
+    for ( i = 0; i < size; i++) {
+        printf("%d. %s\n", i + 1, items[i]);
+    }
+}
+
+void reportItem() {
+    Item* newItem = (Item*)malloc(sizeof(Item));
+    newItem->id = itemIdCounter++;
+    newItem->next = NULL;
+
+    int choice;
+    printf("\nSelect Category:\n");
+    printf("1. Electronics\n2. Stationery\n3. Bags\n4. Clothes\n5. Bottles\n6. ID Cards\n> ");
+    scanf("%d", &choice); getchar();
+
+    switch (choice) {
+        case 1:
+            strcpy(newItem->category, "Electronics");
+            printf("Select Item:\n");
+            listOptions(electronicsItems, 7);
+            break;
+        case 2:
+            strcpy(newItem->category, "Stationery");
+            printf("Select Item:\n");
+            listOptions(stationeryItems, 6);
+            break;
+        case 3:
+            strcpy(newItem->category, "Bags");
+            printf("Select Item:\n");
+            listOptions(bagItems, 3);
+            break;
+        case 4:
+            strcpy(newItem->category, "Clothes");
+            printf("Select Item:\n");
+            listOptions(clothesItems, 3);
+            break;
+        case 5:
+            strcpy(newItem->category, "Bottles");
+            printf("Select Item:\n");
+            listOptions(bottleItems, 2);
+            break;
+        case 6:
+            strcpy(newItem->category, "ID Cards");
+            printf("Select Item:\n");
+            listOptions(idItems, 2);
+            break;
+        default:
+            printf("Invalid category.\n");
+            return;
+    }
+
+    int itemIndex;
+    printf("> ");
+    scanf("%d", &itemIndex); getchar();
+    const char* selectedItem = NULL;
+    switch (choice) {
+        case 1: selectedItem = electronicsItems[itemIndex - 1]; break;
+        case 2: selectedItem = stationeryItems[itemIndex - 1]; break;
+        case 3: selectedItem = bagItems[itemIndex - 1]; break;
+        case 4: selectedItem = clothesItems[itemIndex - 1]; break;
+        case 5: selectedItem = bottleItems[itemIndex - 1]; break;
+        case 6: selectedItem = idItems[itemIndex - 1]; break;
+    }
+    strcpy(newItem->name, selectedItem);
+
+    printf("Status (Lost/Found): ");
+    fgets(newItem->status, 10, stdin);
+    newItem->status[strcspn(newItem->status, "\n")] = 0;
+
+    printf("Select Location Found:\n");
+    for (i = 0; i < locationCount; i++) {
+        printf("%d. %s\n", i + 1, locations[i]);
+    }
+    int locIndex;
+    printf("> ");
+    scanf("%d", &locIndex); getchar();
+    strcpy(newItem->location, locations[locIndex - 1]);
+
+    printf("Enter Your Name: ");
+    fgets(newItem->personName, MAX_NAME, stdin);
+    newItem->personName[strcspn(newItem->personName, "\n")] = 0;
+
+    printf("Enter Phone Number: ");
+    fgets(newItem->phone, MAX_PHONE, stdin);
+    newItem->phone[strcspn(newItem->phone, "\n")] = 0;
+
+    newItem->next = head;
+    head = newItem;
+
+    printf("\n? Item Reported Successfully!\n");
+}
+
+void viewItems() {
+    Item* temp = head;
+    if (!temp) {
+        printf("\nNo items reported yet.\n");
+        return;
+    }
+    printf("\n--- Reported Items ---\n");
+    while (temp) {
+        printf("ID: %d | %s (%s)\nStatus: %s | Location: %s\nBy: %s (%s)\n\n",
+            temp->id, temp->name, temp->category,
+            temp->status, temp->location,
+            temp->personName, temp->phone);
+        temp = temp->next;
+    }
+}
+
+int main() {
+    int choice;
+    do {
+        printf("\n========= Lost & Found System =========\n");
+        printf("1. Report Lost/Found Item\n");
+        printf("2. View All Reported Items\n");
+        printf("0. Exit\n");
+        printf("> ");
+        scanf("%d", &choice); getchar();
+
+        switch (choice) {
+            case 1: reportItem(); break;
+            case 2: viewItems(); break;
+            case 0: printf("Exiting...\n"); break;
+            default: printf("Invalid choice.\n");
+        }
+    } while (choice != 0);
+
+    return 0;
+}
